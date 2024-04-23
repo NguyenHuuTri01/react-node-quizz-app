@@ -1,13 +1,22 @@
+import axios from 'axios';
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { FcPlus } from 'react-icons/fc';
+import { toast } from "react-toastify";
 
 const ModalCreateUser = (props) => {
     const { show, setShow } = props;
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleClose = () => {
+        setShow(false);
+        setEmail('');
+        setPassword('');
+        setUsername('');
+        setRole('USER');
+        setImage('');
+        setPreviewImage('')
+    }
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -22,6 +31,43 @@ const ModalCreateUser = (props) => {
             setImage(e.target.files[0]);
         } else {
             // setPreviewImage('');
+        }
+    }
+
+    const validateEmail = (email) => {
+        return String(email)
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+    };
+
+    const handleSubmitCreateUser = async () => {
+        const isValidEmail = validateEmail(email);
+        if (!isValidEmail) {
+            toast.error('Invalid Email')
+            return;
+        }
+
+        if (!password) {
+            toast.error('Invalid Password')
+            return;
+        }
+
+        const data = new FormData();
+        data.append('email', email);
+        data.append('password', password);
+        data.append('username', username);
+        data.append('role', role);
+        data.append('userImage', image);
+
+        let res = await axios.post('http://localhost:8081/api/v1/participant', data);
+        if (res.data && res.data.EC === 0) {
+            toast.success(res.data.EM);
+            handleClose();
+        }
+        if (res.data && res.data.EC !== 0) {
+            toast.error(res.data.EM);
         }
 
     }
@@ -94,7 +140,7 @@ const ModalCreateUser = (props) => {
                         </div>
                         <div className='col-md-12 img-preview'>
                             {previewImage ?
-                                <img src={previewImage} />
+                                <img src={previewImage} alt='' />
                                 :
                                 <span>Preview Image</span>
                             }
@@ -105,7 +151,7 @@ const ModalCreateUser = (props) => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
+                    <Button variant="primary" onClick={() => handleSubmitCreateUser()}>
                         Save
                     </Button>
                 </Modal.Footer>
