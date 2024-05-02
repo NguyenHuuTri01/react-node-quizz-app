@@ -4,9 +4,10 @@ import { FcPlus } from 'react-icons/fc';
 import { useState, useRef } from "react";
 import TableUser from "./TableUser";
 
+
 const ManageUser = (props) => {
 
-    const [showModalCreateUser, setShowModalCreateUser] = useState(false)
+    const [showModalCreateUser, setShowModalCreateUser] = useState(false);
     const tableUserRef = useRef();
 
     const updateTable = () => {
@@ -35,6 +36,7 @@ const ManageUser = (props) => {
                     setShow={setShowModalCreateUser}
                     updateTable={updateTable}
                 />
+
             </div>
         </div>
     )

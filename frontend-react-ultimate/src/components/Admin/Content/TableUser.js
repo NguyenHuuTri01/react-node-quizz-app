@@ -1,8 +1,11 @@
 import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 import { getAllUsers } from "../../../services/apiService";
+import ModalUpdateUser from "./ModalUpdateUser";
 
 const TableUser = forwardRef((props, ref) => {
-    const [listUsers, setListUsers] = useState([])
+    const [listUsers, setListUsers] = useState([]);
+    const [showModalUpdateUser, setShowModalUpdateUser] = useState(false);
+    const [dataUpdate, setDataUpdate] = useState({});
 
     useEffect(() => {
         fetchListUser();
@@ -19,6 +22,11 @@ const TableUser = forwardRef((props, ref) => {
         updateTableUser() { fetchListUser() }
     }
     ))
+
+    const handleUpdateUser = (data) => {
+        setShowModalUpdateUser(true);
+        setDataUpdate(data);
+    }
 
     return (
         <>
@@ -46,12 +54,16 @@ const TableUser = forwardRef((props, ref) => {
                                         <button className="btn btn-secondary">
                                             View
                                         </button>
-                                        <button className="btn btn-warning mx-3">
+                                        <button
+                                            className="btn btn-warning mx-3"
+                                            onClick={() => handleUpdateUser(item)}
+                                        >
                                             Update
                                         </button>
                                         <button className="btn btn-danger">
                                             Delete
                                         </button>
+
                                     </td>
                                 </tr>
                             )
@@ -65,6 +77,11 @@ const TableUser = forwardRef((props, ref) => {
                     }
                 </tbody>
             </table>
+            <ModalUpdateUser
+                show={showModalUpdateUser}
+                setShow={setShowModalUpdateUser}
+                dataUpdate={dataUpdate}
+            />
         </>
     )
 })
