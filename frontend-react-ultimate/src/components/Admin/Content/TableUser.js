@@ -1,11 +1,16 @@
 import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 import { getAllUsers } from "../../../services/apiService";
 import ModalUpdateUser from "./ModalUpdateUser";
+import ModalViewUser from './ModalViewUser';
+import ModalDeleteUser from "./ModalDeleteUser";
 
 const TableUser = forwardRef((props, ref) => {
     const [listUsers, setListUsers] = useState([]);
     const [showModalUpdateUser, setShowModalUpdateUser] = useState(false);
+    const [showModalViewUser, setShowModalViewUser] = useState(false);
+    const [showModalDeleteUser, setShowModalDeleteUser] = useState(false);
     const [dataUpdate, setDataUpdate] = useState({});
+    const [dataDelete, setDataDelete] = useState({});
 
     useEffect(() => {
         fetchListUser();
@@ -18,6 +23,10 @@ const TableUser = forwardRef((props, ref) => {
         }
     }
 
+    const resetUpdateData = () => {
+        setDataUpdate({})
+    }
+
     useImperativeHandle(ref, () => ({
         updateTableUser() { fetchListUser() }
     }
@@ -26,6 +35,16 @@ const TableUser = forwardRef((props, ref) => {
     const handleUpdateUser = (data) => {
         setShowModalUpdateUser(true);
         setDataUpdate(data);
+    }
+
+    const handleViewUser = (data) => {
+        setShowModalViewUser(true);
+        setDataUpdate(data);
+    }
+
+    const handleDeleteUser = (user) => {
+        setShowModalDeleteUser(true);
+        setDataDelete(user)
     }
 
     return (
@@ -51,7 +70,10 @@ const TableUser = forwardRef((props, ref) => {
                                     <td>{item.email}</td>
                                     <td>{item.role}</td>
                                     <td>
-                                        <button className="btn btn-secondary">
+                                        <button
+                                            className="btn btn-secondary"
+                                            onClick={() => handleViewUser(item)}
+                                        >
                                             View
                                         </button>
                                         <button
@@ -60,7 +82,10 @@ const TableUser = forwardRef((props, ref) => {
                                         >
                                             Update
                                         </button>
-                                        <button className="btn btn-danger">
+                                        <button
+                                            className="btn btn-danger"
+                                            onClick={() => handleDeleteUser(item)}
+                                        >
                                             Delete
                                         </button>
 
@@ -81,6 +106,20 @@ const TableUser = forwardRef((props, ref) => {
                 show={showModalUpdateUser}
                 setShow={setShowModalUpdateUser}
                 dataUpdate={dataUpdate}
+                updateTable={fetchListUser}
+                resetUpdateData={resetUpdateData}
+            />
+            <ModalViewUser
+                show={showModalViewUser}
+                setShow={setShowModalViewUser}
+                dataUpdate={dataUpdate}
+                resetUpdateData={resetUpdateData}
+            />
+            <ModalDeleteUser
+                show={showModalDeleteUser}
+                setShow={setShowModalDeleteUser}
+                dataDelete={dataDelete}
+                updateTable={fetchListUser}
             />
         </>
     )
