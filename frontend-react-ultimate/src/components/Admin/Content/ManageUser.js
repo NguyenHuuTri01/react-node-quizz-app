@@ -2,7 +2,8 @@ import ModalCreateUser from "./ModalCreateUser";
 import './ManageUser.scss'
 import { FcPlus } from 'react-icons/fc';
 import { useState, useRef } from "react";
-import TableUser from "./TableUser";
+// import TableUser from "./TableUser";
+import TableUserPaginate from "./TableUserPaginate";
 
 
 const ManageUser = (props) => {
@@ -29,7 +30,8 @@ const ManageUser = (props) => {
                     </button>
                 </div>
                 <div className="table-users-container">
-                    <TableUser ref={tableUserRef} />
+                    {/* <TableUser ref={tableUserRef} /> */}
+                    <TableUserPaginate ref={tableUserRef} />
                 </div>
                 <ModalCreateUser
                     show={showModalCreateUser}

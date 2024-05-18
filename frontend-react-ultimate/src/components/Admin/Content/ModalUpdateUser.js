@@ -7,7 +7,7 @@ import { putUpdateUser } from '../../../services/apiService';
 import _ from 'lodash';
 
 const ModalUpdateUser = (props) => {
-    const { show, setShow, dataUpdate, resetUpdateData } = props;
+    const { show, setShow, dataUpdate, resetUpdateData, updateTable, page } = props;
     useEffect(() => {
         if (!_.isEmpty(dataUpdate)) {
             setEmail(dataUpdate.email);
@@ -55,7 +55,7 @@ const ModalUpdateUser = (props) => {
         let data = await putUpdateUser(dataUpdate.id, username, role, image);
         if (data && data.EC === 0) {
             toast.success(data.EM);
-            await props.updateTable()
+            await updateTable(page)
             handleClose();
         }
         if (data && data.EC !== 0) {
