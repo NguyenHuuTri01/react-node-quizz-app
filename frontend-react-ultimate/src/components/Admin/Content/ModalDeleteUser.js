@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 
 const ModalDeleteUser = (props) => {
-    const { show, setShow, dataDelete, updateTable } = props;
+    const { show, setShow, dataDelete, updateTable, page, setPage } = props;
 
     const handleClose = () => setShow(false);
 
@@ -13,7 +13,8 @@ const ModalDeleteUser = (props) => {
         let data = await deleteUser(dataDelete.id);
         if (data && data.EC === 0) {
             toast.success(data.EM);
-            await updateTable();
+            await updateTable(page);
+            setPage(1);
             handleClose();
         }
         if (data && data.EC !== 0) {

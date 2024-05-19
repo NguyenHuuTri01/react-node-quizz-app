@@ -1,6 +1,6 @@
 import ReactPaginate from "react-paginate";
 import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
-import { getAllUsers, getUserWithPaginate } from "../../../services/apiService";
+import { getUserWithPaginate } from "../../../services/apiService";
 import ModalUpdateUser from "./ModalUpdateUser";
 import ModalViewUser from './ModalViewUser';
 import ModalDeleteUser from "./ModalDeleteUser";
@@ -20,14 +20,14 @@ const TableUserPaginate = forwardRef((props, ref) => {
     useEffect(() => {
         // fetchListUser();
         fetchListUserWithPaginate(page);
-    }, [])
+    }, [page])
 
-    const fetchListUser = async () => {
-        let res = await getAllUsers();
-        if (res.EC === 0) {
-            setListUsers(res.DT)
-        }
-    }
+    // const fetchListUser = async () => {
+    //     let res = await getAllUsers();
+    //     if (res.EC === 0) {
+    //         setListUsers(res.DT)
+    //     }
+    // }
     const fetchListUserWithPaginate = async (page) => {
         let res = await getUserWithPaginate(page, LIMIT_USER);
         if (res.EC === 0) {
@@ -43,10 +43,8 @@ const TableUserPaginate = forwardRef((props, ref) => {
 
     useImperativeHandle(ref, () => ({
         updateTableUser() {
-            {
-                fetchListUserWithPaginate(1)
-                setPage(1);
-            }
+            fetchListUserWithPaginate(1)
+            setPage(1);
         }
     }
     ))
@@ -168,7 +166,9 @@ const TableUserPaginate = forwardRef((props, ref) => {
                 show={showModalDeleteUser}
                 setShow={setShowModalDeleteUser}
                 dataDelete={dataDelete}
-                updateTable={fetchListUser}
+                updateTable={fetchListUserWithPaginate}
+                page={page}
+                setPage={setPage}
             />
         </>
     )
