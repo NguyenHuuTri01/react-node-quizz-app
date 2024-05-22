@@ -14,10 +14,16 @@ import sidebarBg from '../../assets/bg2.jpg';
 import { DiReact } from 'react-icons/di';
 import { MdDashboard } from 'react-icons/md';
 import './SideBar.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SideBar = (props) => {
     const { collapsed, toggled, handleToggleSidebar } = props;
+    const navigate = useNavigate();
+
+    const backToHomePage = () => {
+        navigate('/')
+    }
+
     return (
         <>
             <ProSidebar
@@ -40,7 +46,12 @@ const SideBar = (props) => {
                             whiteSpace: 'nowrap',
                         }}
                     >
-                        <DiReact size={'3em'} color='00bfff' />
+                        <DiReact
+                            size={'3em'}
+                            color='00bfff'
+                            onClick={() => backToHomePage()}
+                            className='logo'
+                        />
                         <span>Typeform</span>
                     </div>
                 </SidebarHeader>
