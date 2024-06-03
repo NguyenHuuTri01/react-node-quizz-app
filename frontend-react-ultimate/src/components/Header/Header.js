@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 const Header = () => {
     const navigate = useNavigate();
     const isAuthenticated = useSelector(state => state.user.isAuthenticated);
-    const account = useSelector(state => state.user.account)
+    // const account = useSelector(state => state.user.account)
 
     const handleLogin = () => {
         navigate('/login');
@@ -17,7 +17,6 @@ const Header = () => {
     const handleRegister = () => {
         navigate('/register');
     }
-    console.log(account)
 
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
