@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { getDataQuiz } from '../../services/apiService';
+import { getDataQuiz, postSubmitQuiz } from '../../services/apiService';
 import _ from 'lodash';
 import './DetailQuiz.scss';
 import Question from "./Question";
@@ -53,9 +53,6 @@ const DetailQuiz = (props) => {
         }
     }
 
-    const handleFinish = () => {
-
-    }
 
     const handleCheckBox = (answerId, questionId) => {
         let dataQuizClone = _.cloneDeep(dataQuiz);
@@ -74,6 +71,40 @@ const DetailQuiz = (props) => {
         if (index > -1) {
             dataQuizClone[index] = question;
             setDataQuiz(dataQuizClone);
+        }
+    }
+
+    const handleFinishQuiz = async () => {
+        let payLoad = {
+            quizId: +quizId,
+            answers: []
+        };
+        let answers = [];
+
+        if (dataQuiz && dataQuiz.length > 0) {
+            dataQuiz.forEach(item => {
+                let questionId = item.questionId
+                let userAnswerId = [];
+
+                item.answers.forEach(a => {
+                    if (a.isSelected) {
+                        userAnswerId.push(a.id);
+                    }
+                })
+
+                answers.push({
+                    questionId: +questionId,
+                    userAnswerId: userAnswerId
+                })
+            })
+            payLoad.answers = answers;
+            let res = await postSubmitQuiz(payLoad);
+            console.log('check res: ', res)
+            if (res && res.EC === 0) {
+
+            } else {
+                alert("Something wrongs....")
+            }
         }
     }
 
@@ -106,7 +137,7 @@ const DetailQuiz = (props) => {
 
                     <button
                         className="btn btn-warning"
-                        onClick={() => handleFinish()}
+                        onClick={() => handleFinishQuiz()}
                     >Finish</button>
                 </div>
             </div>
