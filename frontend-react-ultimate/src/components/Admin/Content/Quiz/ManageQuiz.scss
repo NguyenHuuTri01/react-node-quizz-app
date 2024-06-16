@@ -1,0 +1,30 @@
+.quiz-container {
+    padding: 15px;
+
+    .title {
+        font-size  : 25px;
+        font-weight: 600;
+    }
+
+    .add-new {
+        .lable-upload {
+            display      : flex;
+            align-items  : center;
+            gap          : 5px;
+            width        : fit-content;
+            padding      : 3px 10px;
+            border-radius: 10px;
+            background   : #d8d7d7;
+            border       : none;
+            cursor       : pointer;
+
+            &:hover {
+                background-color: #dcdcdc;
+            }
+        }
+    }
+
+    legend {
+        font-size: 13px;
+    }
+}
