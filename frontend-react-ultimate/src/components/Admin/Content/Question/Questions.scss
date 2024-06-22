@@ -17,10 +17,6 @@
                 padding-top: 15px;
 
                 .label-up {
-                    // height       : 30px;
-                    // border       : 1px solid red;
-                    // border-radius: 5px;
-                    // padding      : 0 10px;
                     margin-right: 5px;
                     cursor      : pointer;
                     color       : #9068ff;
@@ -30,6 +26,14 @@
                         color: #4400ff;
                     }
 
+                }
+
+                .preview-image {
+                    cursor: zoom-in;
+
+                    &:hover {
+                        color: rgb(65, 210, 123);
+                    }
                 }
             }
 
